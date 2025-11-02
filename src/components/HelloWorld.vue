@@ -45,6 +45,12 @@ function resetGame() {
   result.value = null
 }
 
+function newRound(){
+  player.value = null
+  computer.value = null
+  result.value = null
+}
+
 const resultMessage = computed(() => {
   if (!result.value) return ''
   if (result.value === 'win') return 'You Win! 🎉'
@@ -93,5 +99,9 @@ const resultMessage = computed(() => {
       @click="resetGame"
       class="mt-6 px-4 py-2 bg-white text-black rounded-lg hover:bg-black hover:text-white transition-colors"
     >Reset Game</button>
+    <button
+      @click="newRound"
+      class="mt-6 ml-4 px-4 py-2 bg-white text-black rounded-lg hover:bg-black hover:text-white transition-colors"
+    >New Round</button>
   </div>
 </template>
