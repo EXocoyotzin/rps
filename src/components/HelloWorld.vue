@@ -132,7 +132,7 @@ const resultMessage = computed(() => {
       <button
         v-if="result"
         @click="newRound"
-        class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+        class="px-4 py-2  bg-white text-black rounded-lg border hover:bg-black hover:text-white  transition-colors"
       >
         New Round
       </button>
