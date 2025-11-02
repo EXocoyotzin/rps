@@ -2,9 +2,31 @@
 import { ref, computed } from 'vue'
 
 const choices = [
-  { name: 'Rock', image: './src/assets/rock.png' },
-  { name: 'Paper', image: './src/assets/paper.png' },
-  { name: 'Scissors', image: './src/assets/scissors.png' }
+  {
+    name: 'Rock',
+    svg: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 64 64">
+      <path fill="#888" d="M20 10h24v44H20z" />
+      <path fill="#555" d="M16 26h32v28H16z" />
+    </svg>`
+  },
+  {
+    name: 'Paper',
+    svg: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 64 64">
+      <rect x="16" y="8" width="32" height="48" fill="#ddd" stroke="#999" stroke-width="2" />
+      <line x1="22" y1="16" x2="42" y2="16" stroke="#999" stroke-width="2"/>
+      <line x1="22" y1="22" x2="42" y2="22" stroke="#999" stroke-width="2"/>
+      <line x1="22" y1="28" x2="42" y2="28" stroke="#999" stroke-width="2"/>
+    </svg>`
+  },
+  {
+    name: 'Scissors',
+    svg: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 64 64">
+      <circle cx="20" cy="20" r="8" stroke="#555" stroke-width="3"/>
+      <circle cx="44" cy="20" r="8" stroke="#555" stroke-width="3"/>
+      <line x1="20" y1="28" x2="44" y2="44" stroke="#555" stroke-width="3"/>
+      <line x1="20" y1="44" x2="44" y2="28" stroke="#555" stroke-width="3"/>
+    </svg>`
+  }
 ]
 
 const player = ref(null)
@@ -38,6 +60,7 @@ function decideWinner(p, c) {
   }
   return 'lose'
 }
+
 function resetGame() {
   score.value = { player: 0, computer: 0, ties: 0 }
   player.value = null
@@ -45,7 +68,7 @@ function resetGame() {
   result.value = null
 }
 
-function newRound(){
+function newRound() {
   player.value = null
   computer.value = null
   result.value = null
@@ -78,7 +101,7 @@ const resultMessage = computed(() => {
         @click="play(c)"
         class="p-2 rounded-lg border hover:scale-110 transition-transform"
       >
-        <img :src="c.image" :alt="c.name" class="w-20 h-20 object-contain" />
+        <div v-html="c.svg" class="w-20 h-20"></div>
       </button>
     </div>
 
@@ -86,22 +109,33 @@ const resultMessage = computed(() => {
     <div v-if="player && computer" class="mb-4 flex justify-center gap-6 items-center">
       <div class="text-center">
         <p class="mb-1">You chose:</p>
-        <img :src="player.image" :alt="player.name" class="w-24 h-24" />
+        <div v-html="player.svg" class="w-24 h-24 mx-auto"></div>
       </div>
       <div class="text-center">
         <p class="mb-1">Computer chose:</p>
-        <img :src="computer.image" :alt="computer.name" class="w-24 h-24" />
+        <div v-html="computer.svg" class="w-24 h-24 mx-auto"></div>
       </div>
     </div>
 
+    <!-- Result message -->
     <p v-if="result" class="text-2xl font-semibold mt-2">{{ resultMessage }}</p>
-    <button
-      @click="resetGame"
-      class="mt-6 px-4 py-2 bg-white text-black rounded-lg hover:bg-black hover:text-white transition-colors"
-    >Reset Game</button>
-    <button
-      @click="newRound"
-      class="mt-6 ml-4 px-4 py-2 bg-white text-black rounded-lg hover:bg-black hover:text-white transition-colors"
-    >New Round</button>
+
+    <!-- Buttons -->
+    <div class="mt-6 flex justify-center gap-4">
+      <button
+        @click="resetGame"
+        class="px-4 py-2 bg-white text-black rounded-lg border hover:bg-black hover:text-white transition-colors"
+      >
+        Reset Score
+      </button>
+
+      <button
+        v-if="result"
+        @click="newRound"
+        class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+      >
+        New Round
+      </button>
+    </div>
   </div>
 </template>
